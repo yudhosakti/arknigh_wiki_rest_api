@@ -105,9 +105,55 @@ const getAllEvent = async(req,response) => {
         let dataFinal = []
 
         for (let index = 0; index < data.length; index++) {
-            
+            dataTemp.push({
+                id_event: data[index].id_event,
+                name: data[index].event_name,
+                image: data[index].event_image,
+                description: data[index].event_description,
+                date: {
+                   global: {
+                    start: data[index].event_start_global,
+                    end: data[index].event_end_global
+                   },
+                   cn: {
+                    start: data[index].event_start_cn,
+                    end: data[index].event_end_cn
+                   }
+                },
+                originium_prime: data[index].quantity
+            })
+            if (dataTemp.length == 30 || index+1 >= data.length) {
+                dataFinal.push(dataTemp)
+                dataTemp = []
+            }
             
         }
+        if (!Number.isInteger(parseInt(page))) {
+            response.json({
+                paginate: {
+                    max_page: dataFinal.length,
+                    current_page: 1,
+                    total_item_page: dataFinal[0].length
+                },
+                data: dataFinal[0]
+            })
+        } else {
+            if (parseInt(page) > dataFinal.length || parseInt(page) <=0) {
+                response.status(404).json({
+                    message: "Data Not Found"
+                })
+            } else {
+                response.json({
+                    paginate: {
+                        max_page: dataFinal.length,
+                        current_page: parseInt(page),
+                        total_item_page: dataFinal[parseInt(page)-1].length
+                    },
+                    data: dataFinal[parseInt(page)-1]
+                })
+            }
+        }
+
         
     } catch (error) {
         response.status(500).json({
@@ -125,5 +171,6 @@ const getAllEvent = async(req,response) => {
 module.exports = {
     getRecentEvent,
     getRecentEventWithRewardCN,
-    getSingleEventDetail
+    getSingleEventDetail,
+    getAllEvent
 }

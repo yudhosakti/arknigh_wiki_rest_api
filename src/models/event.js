@@ -27,9 +27,10 @@ const getSingleEvent = (id) => {
 }
 
 const getAllEvent = () => {
-   const query = `SELECT * FROM tbl_event`
+   const query = `SELECT tbl_event.id_event,tbl_event.event_name,tbl_event.event_image,tbl_event.event_description,tbl_event.event_type,tbl_event.event_start_cn,tbl_event.event_end_cn,tbl_event.event_start_global,tbl_event.event_end_global,i.quantity FROM tbl_event LEFT OUTER JOIN (SELECT * FROM tbl_event_reward WHERE tbl_event_reward.id_material = 97) AS i ON tbl_event.id_event = i.id_event`
    return dbConnection.execute(query)
 }
+
 
 module.exports = {
     getRecentEvent,
