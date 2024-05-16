@@ -122,12 +122,11 @@ const addUser = async (req,response) => {
     const username = req.body
     const password = req.body
     try {
-        await userModel.addUser(username,password).then((value) => {
+        await userModel.addUser(username.username,password.password).then((value) => {
             console.log(value)
             response.json({
                 message: "User Created",
-                username: username,
-                password: password
+                username: username
             })
         })
         
@@ -143,14 +142,10 @@ const addBookmark = async (req,response) => {
     const idOperator = req.body
     const date = req.body
     try {
-        await userModel.addBookmark(idUser,idOperator,date).then((value)=> {
+        await userModel.addBookmark(idUser.id_user,idOperator.id_operator,date.date).then((value)=> {
              response.json({
                 message: "Create Bookmark Succes",
-                data: {
-                    id_user: idUser,
-                    id_operator: idOperator,
-                    date: date
-                }
+                data: idUser
              })
         })
         
@@ -183,14 +178,10 @@ const addLike = async (req,response) => {
     const idOperator = req.body
     const date = req.body
     try {
-        await userModel.addLike(idUser,idOperator,date).then(()=> {
+        await userModel.addLike(idUser.id_user,idOperator.id_operator,date.date).then(()=> {
             response.json({
                 message: "Like Success",
-                data: {
-                    user_id: idUser,
-                    operator_id: idOperator,
-                    date: date
-                }
+                data: idUser
             })
         })
         
@@ -223,14 +214,10 @@ const updateUser = async (req,response) => {
     const avatar = req.body
     const id = req.body
     try {
-       await userModel.updateUser(username,avatar,id).then(()=>{
+       await userModel.updateUser(username.username,avatar.avatar,id.id).then(()=>{
            response.json({
                message: "Data Updated",
-               data: {
-                name: username,
-                avatar: avatar,
-                id: id
-               }
+               data:username
            })
        })
         
@@ -245,7 +232,7 @@ const updatePassword = async(req,response) => {
     const newPassword = req.body
     const id = req.body
     try {
-        await userModel.updatePassword(newPassword,id).then(()=>{
+        await userModel.updatePassword(newPassword.newPassword,id.id).then(()=>{
             response.json({
                 message: "Update Password Success"
             })

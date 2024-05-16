@@ -5,7 +5,8 @@ const eventRoute = require('./src/route/event');
 const bannerRoute = require('./src/route/banner');
 const materialRoute = require('./src/route/material');
 const enemyRoute = require('./src/route/enemy');
-const themeRoute = require('./src/route/theme')
+const themeRoute = require('./src/route/theme');
+const userRoute = require('./src/route/user')
 
 const app = express();
 let port  = 4000;
@@ -19,6 +20,7 @@ app.use('/banner',bannerRoute)
 app.use('/material',materialRoute)
 app.use('/enemy',enemyRoute)
 app.use('/theme',themeRoute)
+app.use('/person',userRoute)
 
 app.listen(port,()=> {
     console.log('Server Running At Port',port);
