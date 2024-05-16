@@ -45,7 +45,7 @@ const getAllTheme = async (req,response) => {
 }
 
 const getAllStageByTheme =async (req,response) => {
-    const stage_id = req.query.stageId
+    const stage_id = req.query.themeId
     try {
         const [data] = await themeModel.getAllStageByTheme(stage_id)
         
