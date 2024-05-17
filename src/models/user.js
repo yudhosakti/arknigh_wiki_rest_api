@@ -40,8 +40,8 @@ const deleteLike = (idLike) => {
     return dbConnection.execute(query)
 }
 
-const addUser = (username, password) => {
-    const query = `INSERT INTO tbl_user( name_user,password) VALUES ('${username}',SHA1('${password}'))`
+const addUser = (email,username, password) => {
+    const query = `INSERT INTO tbl_user(name_user,password,email) VALUES ('${username}',SHA1('${password}'),'${email}')`
     return dbConnection.execute(query)
 }
 
@@ -52,6 +52,11 @@ const updateUser = (username,avatar,id) => {
 
 const updatePassword = (newPassword,id) => {
     const query = `UPDATE tbl_user SET password=SHA1('${newPassword}') WHERE id_user = ${id}`
+    return dbConnection.execute(query)
+}
+
+const validateUser = (email,password) => {
+    const query = `SELECT * FROM tbl_user WHERE tbl_user.email = '${email}' AND tbl_user.password = SHA1('${password}')`
     return dbConnection.execute(query)
 }
 
@@ -66,6 +71,7 @@ module.exports = {
     addUser,
     getSingleUser,
     getAllBookmarkById,
-    getAllLikeById
+    getAllLikeById,
+    validateUser
 }
 

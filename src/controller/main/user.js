@@ -1,5 +1,7 @@
 const userModel = require('../../models/user')
 
+const jwt = require('jsonwebtoken')
+
 const getSingleUser = async(req,response) => {
     const id = req.query.id
     try {
@@ -245,6 +247,48 @@ const updatePassword = async(req,response) => {
     }
 }
 
+const loginUser = async(req,response) => {
+    const data = req.body
+    try {
+        const [user] = await userModel.validateUser(data.email,data.password)
+
+        if (user.length == 0) {
+            response.status(404).json({
+                message: "User Not Found"
+            })
+        }else{
+            var payload = {
+                id_user: user[0].id_user,
+                name: user[0].name_user,
+                email:user[0].email,
+                avatar: user[0].avatar_user,
+                like: user[0].like_count,
+                bookmark: user[0].bookmark_count
+            }
+            var privateKey = "yudho"
+            const expired = 60 * 60 *24 * 7
+            var token = jwt.sign(payload, privateKey, {expiresIn: expired});
+            response.json({
+                message: "Login Succes",
+                data: {
+                    id_user: user[0].id_user,
+                    name: user[0].name_user,
+                    email:user[0].email,
+                    avatar: user[0].avatar_user,
+                    like: user[0].like_count,
+                    bookmark: user[0].bookmark_count
+                },
+                token: token
+            })
+        }
+        
+    } catch (error) {
+        response.status(500).json({
+            message: error
+        })
+    }
+}
+
 module.exports = {
     getSingleUser,
     getAllUser,
@@ -254,5 +298,6 @@ module.exports = {
     addLike,
     deleteLike,
     updateUser,
-    updatePassword
+    updatePassword,
+    loginUser
 }
